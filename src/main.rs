@@ -1,20 +1,25 @@
+
 // Copyright © 2019 Jason Bockover
 // CS 510 Course Project
 // Connect Four 
 // let's use a crate to create the gameboard 
 // after each turn update the gameboard 
 
-//#[macro_use(s)]
+// Copyright © 2019 Jason Bockover
+// CS 510 Course Project
+// Connect Four 
+// let's use a crate to create the gameboard 
+// after each turn update the gameboard 
 
+#[macro_use(s)]
+extern crate unicode_normalization;
 extern crate ndarray;
 use std::io;
 
+ use ndarray::Array2;
 
-pub fn main() {
-	let mut counter = 1;
-	let player1 = 1;
-	let player2 = 2;
-	
+fn main() {
+
 	println!("Hello, and Welcome to Connect Four!!!");
 	println!("Would you like to know the rules? Use 1 for yes and 0 for no: ");
 	let mut response = String::new();
@@ -29,18 +34,22 @@ pub fn main() {
 	assert!(response == 1 || response == 0); //make sure input is valid 
 	
 	 println!("Now time to play!\n");
-	 //game_board();
-	 use ndarray::Array2;
+	// use ndarray::Array2;
 	let mut array = Array2::<u64>::zeros((6,7));
-
 	println!("{}", array);
-
-		
-	let mut cur_player;
-	cur_player = 1;
 	
-		while counter < 41 {
-			let mut winner = false;
+	
+	let player1 = 1;
+	let player2 = 2;
+	
+	let mut counter = 1;
+	
+	let mut cur_player;
+	cur_player = player1;
+	
+	let mut winner = false;
+	
+		while counter < 41 && !winner {
 			
 	//now with connect four the checkers all go to the bottom unless a checker is under it
 			println!("Turn {}", counter);
@@ -48,44 +57,39 @@ pub fn main() {
 			let mut column = String::new();
 			io::stdin().read_line(&mut column).expect("Failed to read column");
 			let mut column: usize = column.trim().parse().expect("Please enter a column: 0 to 6");
-			let mut row:usize = 5;
+			let mut row: usize = 5;
 			let mut done = false;
 			
+			
 			while !done { // check the rows to find an empty one 
-				if array[[row,column]] != 0 { //if not empty 
-				row -= 1 //go up to next row 
-				} else if array[[row,column]] != 0 && row == 0 {
-				println!("Error! Space is already taken! Please try again:\n");
-				println!("Please enter a column: ");
-				let mut column2 = String::new();
-				io::stdin().read_line(&mut column2).expect("Failed to read column");
-				let column2: usize = column2.trim().parse().expect("Please enter a column: 0 to 6");
-				column = column2;	
+				if array[[row,column]] != 0 { //if not empty
+					if row == 0 { //if we reach the top of the column
+						println!("Error! Space is already taken! Please try again:\n");
+						println!("Please enter a different column: ");
+						let mut column2 = String::new();
+						io::stdin().read_line(&mut column2).expect("Failed to read column");
+						let column2: usize = column2.trim().parse().expect("Please enter a column: 0 to 6");
+						column = column2;
+						row = 5;
+					} else {
+						row -= 1 //go up to next row
+					} 	
 				} else {
 					done = true
 			     }
 			 }
 			
 			array[[row,column]] = cur_player;
+	
 			
-					for row in 0..5 {
-						let mut count = 0;
-						for column in 0..6 {
-						if array[[row,column]] == array[[row + 1, column]] {
-							count += 1;
-					    } else {
-							count -= 1;
-							if count < 0 {
-								count = 0
-							}
-				        }
-				         if count == 4 {
-						     winner = true
-					        } else {
-						    break
-					         }
-				      }
-				    }
+                     let mut count = 0; 
+                      
+                   while !winner {      			
+					  if array[[0,0]] == array[[0,1]] {
+						  println!("OWOWOOWOW")
+					  }
+					        
+				   }
 			//array[[row,column]] = cur_player;
 			counter += 1;
 			println!("{}", array);
