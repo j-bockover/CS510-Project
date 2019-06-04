@@ -60,7 +60,7 @@ fn main() {
         while !done {
             // check the rows to find an empty one
             while array[[row, col]] != 0 {
-				println!("{:?}", row);
+                println!("{:?}", row);
                 //if not empty
                 if row == 0 {
                     //if we reach the top of the column
@@ -76,15 +76,15 @@ fn main() {
                         .expect("Please enter a column: 0 to 6");
                     col = col2;
                     row = 5;
-                } else if row > 0{
-                    row = row - 1; //go up to next row
-                  }      
-              } 
-	         array[[row, col]] = cur_player;
-	         println!("{}", array);
-	         done = true //empty slot is found for input
+                } else if row > 0 {
+                    row -= 1; //go up to next row
+                }
             }
-        
+            array[[row, col]] = cur_player;
+            println!("{}", array);
+            done = true //empty slot is found for input
+        }
+
         while !winner {
             if ((array[[5,0]] == cur_player)  &&  (array[[5,0]] == array[[5,1]]) &&  (array[[5,1]] == array[[5,2]]) && (array[[5,2]] == array[[5,3]])) || //check the rows to see if four in a row 
 						 ((array[[5,1]] == cur_player)  &&  (array[[5,1]] == array[[5,2]]) &&  (array[[5,2]] == array[[5,3]]) && (array[[5,3]] == array[[5,4]])) ||	
@@ -139,7 +139,7 @@ fn main() {
                 println!("{} wins! 4 in a Vertical Row!", cur_player);
                 winner = true;
                 assert!(winner)
-                          } else if ((array[[2,0]] == cur_player)  &&  (array[[2,0]] == array[[3,1]]) &&  (array[[3,1]] == array[[4,2]]) && (array[[4,2]] == array[[5,3]])) || //now check the board diagonally to see if four in a row
+            } else if ((array[[2,0]] == cur_player)  &&  (array[[2,0]] == array[[3,1]]) &&  (array[[3,1]] == array[[4,2]]) && (array[[4,2]] == array[[5,3]])) || //now check the board diagonally to see if four in a row
                                     ((array[[1,0]] == cur_player)  &&  (array[[1,0]] == array[[2,1]]) &&  (array[[2,1]] == array[[3,2]]) && (array[[3,2]] == array[[4,3]])) ||						 
 						            ((array[[2,1]] == cur_player)  &&  (array[[2,1]] == array[[3,2]]) &&  (array[[3,2]] == array[[4,3]]) && (array[[4,3]] == array[[5,4]])) ||
 						            ((array[[0,0]] == cur_player)  &&  (array[[0,0]] == array[[1,1]]) &&  (array[[1,1]] == array[[2,2]]) && (array[[2,2]] == array[[3,3]])) ||
@@ -169,25 +169,26 @@ fn main() {
                 winner = true;
                 assert!(winner)
             } else if counter == 41 {
-				println!("IT'S A TIE!!!! Everyone wins!!");
-				winner == true;
-				assert!(winner)
-				} else {
+                println!("IT'S A TIE!!!! Everyone wins!!");
+                winner = true;
+                assert!(winner)
+            } else {
                 break;
             }
         }
-        
-        if !winner { 
-			 counter += 1; // increase counter for next turn 
-			if cur_player == player1 { //switch players 
-            cur_player = player2;
-            println!("ok your turn player2!");
-			} else if cur_player == player2 {
-            cur_player = player1;
-            println!("ok your turn player1!");
+
+        if !winner {
+            counter += 1; // increase counter for next turn
+            if cur_player == player1 {
+                //switch players
+                cur_player = player2;
+                println!("ok your turn player2!");
+            } else if cur_player == player2 {
+                cur_player = player1;
+                println!("ok your turn player1!");
             }
-	   }
-   }
+        }
+    }
 }
 
 fn game_rules() {
