@@ -1,14 +1,10 @@
 // Copyright © 2019 Jason Bockover
-// CS 510 Course Project
+// CS 510 RUST Course Project
 // Connect Four
-// let's use a crate to create the gameboard
-// after each turn update the gameboard
 
-//#[macro_use(s)]
+
 extern crate ndarray;
-extern crate unicode_normalization;
 use std::io;
-
 use ndarray::Array2;
 
 fn main() {
@@ -19,33 +15,31 @@ fn main() {
         .read_line(&mut response)
         .expect("Failed to read line");
     let response: u64 = response.trim().parse().expect("Please enter 1 or 0");
-    match response {
+    match response {              //check if player wants to know the rules or not 
         1 => game_rules(),
         0 => println!("Onto the game!"),
-        _ => println!("Error invalid input! \u{1F980}"),
+        _ => println!("Error invalid input! \u{1F980}"), 
     };
 
     assert!(response == 1 || response == 0); //make sure input is valid
 
-    println!("Now time to play!\n");
-    // use ndarray::Array2;
-    let mut array = Array2::<u64>::zeros((6, 7));
-    println!("{}", array);
+    let mut array = Array2::<u64>::zeros((6, 7)); //create the 6 row 7 column gameboard 
+    println!("{}", array); //print the gameboard
 
-    let player1 = 1;
+    let player1 = 1; //define the players and the counter
     let player2 = 2;
 
     let mut counter = 0;
 
-    let mut cur_player;
-    cur_player = player1;
+    let mut cur_player; //define the current player 
+    cur_player = player1; //player1 goes first
 
-    let mut winner = false;
+    let mut winner = false; //set winner to false 
 
-    while counter < 42 && !winner {
-        //now with connect four the checkers all go to the bottom unless a checker is under it
-        println!("Turn {}", counter);
-        println!("Please enter a column: ");
+    while counter < 42 && !winner { 
+        //now with connect four the checkers all go to the bottom of the gameboard unless a checker is under it
+        println!("Turn {}", counter); //print the turn number 
+        println!("Please enter a column: "); //ask user for column
         let mut column = String::new();
         io::stdin()
             .read_line(&mut column)
@@ -54,8 +48,8 @@ fn main() {
             .trim()
             .parse()
             .expect("Please enter a column: 0 to 6");
-        let mut row: usize = 5;
-        let mut done = false;
+        let mut row: usize = 5; //set row value to the index at the bottom of the gameboard 
+        let mut done = false; 
 
         while !done {
             // check the rows to find an empty one
@@ -63,9 +57,9 @@ fn main() {
                 println!("{:?}", row);
                 //if not empty
                 if row == 0 {
-                    //if we reach the top of the column
+                    //if we reach the topmost row in the column and its not empty
                     println!("Error! Space is already taken! Please try again:\n");
-                    println!("Please enter a different column: ");
+                    println!("Please enter a different column: "); //have user choose new column 
                     let mut column2 = String::new();
                     io::stdin()
                         .read_line(&mut column2)
@@ -75,18 +69,19 @@ fn main() {
                         .parse()
                         .expect("Please enter a column: 0 to 6");
                     col = col2;
-                    row = 5;
-                } else if row > 0 {
+                    row = 5; //reset row to start at the bottom of the new column chosen
+                } else if row > 0 { //if the row is not at the top of the column and is already taken 
                     row -= 1; //go up to next row
                 }
             }
-            array[[row, col]] = cur_player;
-            println!("{}", array);
+            array[[row, col]] = cur_player; //add checker to the gameboard 
+            println!("{}", array); //print the array with the new checker added 
             done = true //empty slot is found for input
         }
 
-        while !winner {
-            if ((array[[5,0]] == cur_player)  &&  (array[[5,0]] == array[[5,1]]) &&  (array[[5,1]] == array[[5,2]]) && (array[[5,2]] == array[[5,3]])) || //check the rows to see if four in a row 
+        while !winner { //check if we have a winner 
+			//first check if we have 4 horizontal checkers that belong to cur_player
+            if ((array[[5,0]] == cur_player)  &&  (array[[5,0]] == array[[5,1]]) &&  (array[[5,1]] == array[[5,2]]) && (array[[5,2]] == array[[5,3]])) ||  
 						 ((array[[5,1]] == cur_player)  &&  (array[[5,1]] == array[[5,2]]) &&  (array[[5,2]] == array[[5,3]]) && (array[[5,3]] == array[[5,4]])) ||	
 						 ((array[[5,2]] == cur_player)  &&  (array[[5,2]] == array[[5,3]]) &&  (array[[5,3]] == array[[5,4]]) && (array[[5,4]] == array[[5,5]])) ||
 						 ((array[[5,3]] == cur_player)  &&  (array[[5,3]] == array[[5,4]]) &&  (array[[5,4]] == array[[5,5]]) && (array[[5,5]] == array[[5,6]])) ||
@@ -111,10 +106,11 @@ fn main() {
 						 ((array[[0,2]] == cur_player)  &&  (array[[0,2]] == array[[0,3]]) &&  (array[[0,3]] == array[[0,4]]) && (array[[0,4]] == array[[0,5]])) ||
 						 ((array[[0,3]] == cur_player)  &&  (array[[0,3]] == array[[0,4]]) &&  (array[[0,4]] == array[[0,5]]) && (array[[0,5]] == array[[0,6]]))
             {
-                println!("{} win! 4 in a Horizontal Row!", cur_player);
+                println!("Player{} wins! 4 in a Horizontal Row!", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner)
-            } else if ((array[[5,0]] == cur_player)  &&  (array[[5,0]] == array[[4,0]]) &&  (array[[4,0]] == array[[3,0]]) && (array[[3,0]] == array[[2,0]])) || //now check the columns to see if four in a row
+                			//next check if we have 4 vertical checkers that belong to cur_player
+            } else if ((array[[5,0]] == cur_player)  &&  (array[[5,0]] == array[[4,0]]) &&  (array[[4,0]] == array[[3,0]]) && (array[[3,0]] == array[[2,0]])) || 
 									((array[[4,0]] == cur_player)  &&  (array[[4,0]] == array[[3,0]]) &&  (array[[3,0]] == array[[2,0]]) && (array[[2,0]] == array[[1,0]])) ||	
 									((array[[3,0]] == cur_player)  &&  (array[[3,0]] == array[[2,0]]) &&  (array[[2,0]] == array[[1,0]]) && (array[[1,0]] == array[[0,0]])) ||
 									((array[[5,1]] == cur_player)  &&  (array[[5,1]] == array[[4,1]]) &&  (array[[4,1]] == array[[3,1]]) && (array[[3,1]] == array[[2,1]])) ||
@@ -136,10 +132,11 @@ fn main() {
 									((array[[4,6]] == cur_player)  &&  (array[[4,6]] == array[[3,6]]) &&  (array[[3,6]] == array[[2,6]]) && (array[[2,6]] == array[[1,6]])) ||	
 									((array[[3,6]] == cur_player)  &&  (array[[3,6]] == array[[2,6]]) &&  (array[[2,6]] == array[[1,6]]) && (array[[1,6]] == array[[0,6]]))
             {
-                println!("{} wins! 4 in a Vertical Row!", cur_player);
+                println!("Player{} wins! 4 in a Vertical Row!", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner)
-            } else if ((array[[2,0]] == cur_player)  &&  (array[[2,0]] == array[[3,1]]) &&  (array[[3,1]] == array[[4,2]]) && (array[[4,2]] == array[[5,3]])) || //now check the board diagonally to see if four in a row
+                			//finally check if we have 4 diagonal checkers that belong to cur_player
+            } else if ((array[[2,0]] == cur_player)  &&  (array[[2,0]] == array[[3,1]]) &&  (array[[3,1]] == array[[4,2]]) && (array[[4,2]] == array[[5,3]])) || 
                                     ((array[[1,0]] == cur_player)  &&  (array[[1,0]] == array[[2,1]]) &&  (array[[2,1]] == array[[3,2]]) && (array[[3,2]] == array[[4,3]])) ||						 
 						            ((array[[2,1]] == cur_player)  &&  (array[[2,1]] == array[[3,2]]) &&  (array[[3,2]] == array[[4,3]]) && (array[[4,3]] == array[[5,4]])) ||
 						            ((array[[0,0]] == cur_player)  &&  (array[[0,0]] == array[[1,1]]) &&  (array[[1,1]] == array[[2,2]]) && (array[[2,2]] == array[[3,3]])) ||
@@ -165,34 +162,32 @@ fn main() {
 						            ((array[[1,3]] == cur_player)  &&  (array[[1,3]] == array[[2,2]]) &&  (array[[2,2]] == array[[3,1]]) && (array[[3,1]] == array[[4,0]])) ||
 						            ((array[[0,3]] == cur_player)  &&  (array[[0,3]] == array[[1,2]]) &&  (array[[1,2]] == array[[2,1]]) && (array[[2,1]] == array[[3,0]]))
             {
-                println!("{} wins! 4 in a Diagonal Row!", cur_player);
+                println!("Player{} wins! 4 in a Diagonal Row!", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner)
-            } else if counter == 41 {
-                println!("IT'S A TIE!!!! Everyone wins!!");
+            } else if counter == 41 { //if both players fill the entire gameboard with 42 checkers 
+                println!("IT'S A TIE!!!! Everyone wins!!"); //then the game ends in a tie!
                 winner = true;
                 assert!(winner)
-            } else {
+            } else { //if no winner then break 
                 break;
             }
         }
 
         if !winner {
             counter += 1; // increase counter for next turn
-            if cur_player == player1 {
-                //switch players
+            if cur_player == player1 { //change cur_player for next turn 
                 cur_player = player2;
-                println!("ok your turn player2!");
+                println!("ok your turn Player2!");
             } else if cur_player == player2 {
                 cur_player = player1;
-                println!("ok your turn player1!");
+                println!("ok your turn Player1!");
             }
         }
     }
 }
 
-fn game_rules() {
-    println!("WOOOOOO!!!");
+fn game_rules() { //displays the rules of Connect Four
     println!(
         "In Connect Four the rules are simple:\n
 	You need to build a row of four checkers either vertically,\n
@@ -202,6 +197,6 @@ fn game_rules() {
 	When it is your turn you choose the column you want to place your checker in \n
 	but remember the checker will go all the way to the bottom of the gameboard. \n
 	If you choose a column that is full you will be prompted to choose a new column \n
-	and the game will continue."
+	and the game will continue. If no moves remain the game will end in a tie!!" 
     )
 }
