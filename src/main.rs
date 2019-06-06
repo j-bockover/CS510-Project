@@ -4,8 +4,11 @@
 
 
 extern crate ndarray;
+extern crate rand;
 use std::io;
 use ndarray::Array2;
+use rand::Rng;
+
 
 fn main() {
     println!("Hello, and Welcome to Connect Four!!!");
@@ -26,13 +29,33 @@ fn main() {
     let mut array = Array2::<u64>::zeros((6, 7)); //create the 6 row 7 column gameboard 
     println!("{}", array); //print the gameboard
 
+
+
+	//let's add a randomizer to randomize who goes first 
+	
+
+	let mut rng = rand::thread_rng();
+	let start = rng.gen_range(1,3); //randomly generate number to decide who goes first 
+
     let player1 = 1; //define the players and the counter
     let player2 = 2;
 
     let mut counter = 0;
 
     let mut cur_player; //define the current player 
-    cur_player = player1; //player1 goes first
+    
+    if start == 1 {    
+      cur_player = player1; //player1 goes first
+      println!("Player {} goes first!", start);
+	} else if start == 2 {
+	  println!("Player {} goes first!", start);
+      cur_player = player2; //player 2 goes first
+    } else {
+		cur_player = 0;
+		assert!(cur_player == 1 || cur_player == 2); //make sure cur_player is a valid number
+	}
+		
+
 
     let mut winner = false; //set winner to false 
 
