@@ -520,7 +520,7 @@ fn secret() {
      };
 		}
 		println!("You are correct! Fantastic! \u{1F386} \u{1F387} \u{1F386} \n
-		Here is your reward! \u{1F48E} \n
+		Here is your reward! \u{1F4B0} \n
 		Now back to the game! \n");
 		main();
         
