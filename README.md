@@ -6,16 +6,17 @@ This project is a Connect Four game made in Rust for CS 510. In Connect Four two
 
 ## What does work?
 Game is currently working without errors. The game will start by asking if the players want to know the rules and if not then the game begins. 
-The game selects which player begins by random and asks the current player for an input. 
+The game selects which player begins at random and asks the current player for an input. 
 If the input is incorrect they are asked to try again. The input is checked to make sure that it is placed in an open space on the game board.
-Then the gameboard is checked to see if there is a winner and if not then the turn is incremented and then it switches to the next player.
+Then the gameboard is checked to see if there is a winner and if not then the turn is incremented and then it switches to the next player. 
 
 
 ## Lessons learned
--practice, practice, practice! Only through routine practice will my coding skills get better especially when learning a new language like rust.
--rustfmt and clippy are fantastic tools! Clippy helped me in many ways to reduce redundant code (for example I had used "assert!(winner == true)" to check if either player had won and clippy helped me reduce that code to just assert!(winner)). 
+-Practice, practice, practice! Only through routine practice will my coding skills get better especially when learning a new language like rust.
+-Rustfmt and clippy are fantastic tools! Clippy helped me in many ways to reduce redundant code (for example I had used "assert!(winner == true)" to check if either player had won and clippy helped me reduce that code to just assert!(winner)). 
 And rustfmt helped me clean up my code and make it look great especially with the code that checks the gameboard to see whether a player has won or not.
--continue programming with a modular mindset instead of jumping headfirst into a program and write up a bunch of code that ends up not working. 
+-Continue programming with a modular mindset instead of jumping headfirst into a program and write up a bunch of code that ends up not working. 
+-Be patient and relax when coding.
 
 
 ## License 
