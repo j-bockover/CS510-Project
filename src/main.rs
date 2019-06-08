@@ -33,7 +33,7 @@ fn main() {
         1 => game_rules(),
         0 => println!("Onto the game!\u{1F980}"),
         777 => secret(),
-        _ => println!("{}","Error invalid input! Please try again! \u{1F6AB}"), 
+        _ => println!("Error invalid input! Please try again! \u{1F6AB}"),
     };
 
     assert!(response == 1 || response == 0); //make sure input is valid
@@ -144,7 +144,7 @@ fn main() {
         while !winner {
             //check if we have a winner
             let mut sound = Sound::new("applause.ogg").unwrap(); //load applause sound for when player wins
-                                                              //first check if we have 4 horizontal checkers that belong to cur_player
+                                                                 //first check if we have 4 horizontal checkers that belong to cur_player
             if ((array[[5, 0]] == cur_player)
                 && (array[[5, 0]] == array[[5, 1]])
                 && (array[[5, 1]] == array[[5, 2]])
@@ -243,7 +243,10 @@ fn main() {
                     && (array[[0, 5]] == array[[0, 6]]))
             {
                 sound.play(); //play winning sound
-                println!("Player{} wins! 4 in a Horizontal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
+                println!(
+                    "Player{} wins! 4 in a Horizontal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}",
+                    cur_player
+                ); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -334,7 +337,10 @@ fn main() {
                     && (array[[1, 6]] == array[[0, 6]]))
             {
                 sound.play(); //play winning sound
-                println!("Player{} wins! 4 in a Vertical Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
+                println!(
+                    "Player{} wins! 4 in a Vertical Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}",
+                    cur_player
+                ); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -437,7 +443,10 @@ fn main() {
                     && (array[[2, 1]] == array[[3, 0]]))
             {
                 sound.play(); //play winning sound
-                println!("Player{} wins! 4 in a Diagonal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
+                println!(
+                    "Player{} wins! 4 in a Diagonal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}",
+                    cur_player
+                ); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -499,33 +508,32 @@ fn play_again() {
 }
 
 fn secret() {
-	println!("\u{1F52E} You found the secret! \u{1F192} \n
+    println!(
+        "\u{1F52E} You found the secret! \u{1F192} \n
 	Now time to test your \u{1F9E0}! Here's a riddle: \n
 	I speak without a mouth \u{1F444} and hear without ears \u{1F442}. I have no body but \n
 	I come alive with wind \u{1F32C}. What am I? \n
 	1): Windmill
 	2): Echo
 	3): Ghost \n
-	Please enter your input 1, 2, or 3: \n");
-	let mut correct = false;
-	while !correct {
-		let mut answer = String::new();
+	Please enter your input 1, 2, or 3: \n"
+    );
+    let mut correct = false;
+    while !correct {
+        let mut answer = String::new();
         io::stdin()
-        .read_line(&mut answer)
-        .expect("Failed to read answer");
-	let answer: u64 = answer.trim().parse().expect("Please enter 1, 2 or 3");
-    match answer {
-        2 => correct = true, 
-        _ => println!("Incorrect! Please try again!"), 
-     };
-		}
-		println!("You are correct! Fantastic! \u{1F386} \u{1F387} \u{1F386} \n
+            .read_line(&mut answer)
+            .expect("Failed to read answer");
+        let answer: u64 = answer.trim().parse().expect("Please enter 1, 2 or 3");
+        match answer {
+            2 => correct = true,
+            _ => println!("Incorrect! Please try again!"),
+        };
+    }
+    println!(
+        "You are correct! Fantastic! \u{1F386} \u{1F387} \u{1F386} \n
 		Here is your reward! \u{1F4B0} \n
-		Now back to the game! \n");
-		main();
-        
+		Now back to the game! \n"
+    );
+    main();
 }
-
-
-
-
