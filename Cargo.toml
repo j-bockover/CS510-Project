@@ -5,10 +5,8 @@ authors = ["Jason Bockover <jasb2@pdx.edu>"]
 edition = "2018"
 
 [dependencies]
-
 ndarray = "0.12.1"
 rand = "0.6"
 colored = "1.8.0"
-
 ears = "0.6.0"
 
