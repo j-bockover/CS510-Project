@@ -5,6 +5,10 @@
 extern crate colored;
 extern crate ndarray;
 extern crate rand;
+
+extern crate ears;
+use ears::{AudioController, Sound};
+
 use colored::*;
 use ndarray::Array2;
 use rand::Rng;
@@ -27,8 +31,9 @@ fn main() {
     match response {
         //check if player wants to know the rules or not
         1 => game_rules(),
-        0 => println!("Onto the game!"),
-        _ => println!("Error invalid input! \u{1F980}"),
+        0 => println!("Onto the game!\u{1F980}"),
+        777 => secret(),
+        _ => println!("{}","Error invalid input! Please try again! \u{1F6AB}"), 
     };
 
     assert!(response == 1 || response == 0); //make sure input is valid
@@ -63,7 +68,7 @@ fn main() {
 
     while counter < 42 && !winner {
         //now with connect four the checkers all go to the bottom of the gameboard unless a checker is under it
-        println!("{} {}", "Turn:".magenta().bright_purple(), counter); //print the turn number
+        println!("{} {}", "Turn:".yellow().bright_purple(), counter); //print the turn number
         println!("Please enter a column: "); //ask user for column
         let mut column = String::new();
         io::stdin()
@@ -76,7 +81,7 @@ fn main() {
         //make sure column input is valid
         let mut valid = false;
         while !valid {
-            if col <= 7 {
+            if col < 7 {
                 valid = true
             } else {
                 println!(
@@ -138,7 +143,8 @@ fn main() {
 
         while !winner {
             //check if we have a winner
-            //first check if we have 4 horizontal checkers that belong to cur_player
+            let mut sound = Sound::new("applause.ogg").unwrap(); //load applause sound for when player wins
+                                                              //first check if we have 4 horizontal checkers that belong to cur_player
             if ((array[[5, 0]] == cur_player)
                 && (array[[5, 0]] == array[[5, 1]])
                 && (array[[5, 1]] == array[[5, 2]])
@@ -236,7 +242,8 @@ fn main() {
                     && (array[[0, 4]] == array[[0, 5]])
                     && (array[[0, 5]] == array[[0, 6]]))
             {
-                println!("Player{} wins! 4 in a Horizontal Row!", cur_player); //if we do then the cur_player wins!
+                sound.play(); //play winning sound
+                println!("Player{} wins! 4 in a Horizontal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -326,7 +333,8 @@ fn main() {
                     && (array[[2, 6]] == array[[1, 6]])
                     && (array[[1, 6]] == array[[0, 6]]))
             {
-                println!("Player{} wins! 4 in a Vertical Row!", cur_player); //if we do then the cur_player wins!
+                sound.play(); //play winning sound
+                println!("Player{} wins! 4 in a Vertical Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -428,13 +436,14 @@ fn main() {
                     && (array[[1, 2]] == array[[2, 1]])
                     && (array[[2, 1]] == array[[3, 0]]))
             {
-                println!("Player{} wins! 4 in a Diagonal Row!", cur_player); //if we do then the cur_player wins!
+                sound.play(); //play winning sound
+                println!("Player{} wins! 4 in a Diagonal Row! \u{1F3C6} \u{1F31F} \u{1F973} \u{1F44F}", cur_player); //if we do then the cur_player wins!
                 winner = true;
                 assert!(winner);
                 play_again()
             } else if counter == 41 {
                 //if both players fill the entire gameboard with 42 checkers
-                println!("IT'S A TIE!!!! Everyone wins!!"); //then the game ends in a tie!
+                println!("IT'S A TIE!!!! Everyone wins!! \u{1F44D}"); //then the game ends in a tie!
                 winner = true;
                 assert!(winner);
                 play_again()
@@ -465,10 +474,10 @@ fn game_rules() {
         "In Connect Four the rules are simple:\n
 	You need to build a row of four checkers either vertically,\n
 	horizontally or diagonally before your opponent does!!\n
-	Each player is represented by a number on the gameboard: \n
+	Each player checker is represented by a number on the gameboard: \n
 	Player1 is represented by a 1 and Player 2 is represented by a 2. \n
 	When it is your turn you choose the column you want to place your checker in \n
-	but remember the checker will go all the way to the bottom of the gameboard. \n
+	but remember the checker will go all the way to the bottom of the gameboard! \n
 	If you choose a column that is full you will be prompted to choose a new column \n
 	and the game will continue. If no moves remain the game will end in a tie!!"
             .bright_cyan()
@@ -476,7 +485,7 @@ fn game_rules() {
 }
 
 fn play_again() {
-    println!("Do you want to play again? Yes or No: ");
+    println!("{}", "Do you want to play again? Yes or No: ".yellow());
     let mut response = String::new();
     io::stdin()
         .read_line(&mut response)
@@ -488,3 +497,35 @@ fn play_again() {
         _ => println!("Error invalid input! \u{1F980}"),
     };
 }
+
+fn secret() {
+	println!("\u{1F52E} You found the secret! \u{1F192} \n
+	Now time to test your \u{1F9E0}! Here's a riddle: \n
+	I speak without a mouth \u{1F444} and hear without ears \u{1F442}. I have no body but \n
+	I come alive with wind \u{1F32C}. What am I? \n
+	1): Windmill
+	2): Echo
+	3): Ghost \n
+	Please enter your input 1, 2, or 3: \n");
+	let mut correct = false;
+	while !correct {
+		let mut answer = String::new();
+        io::stdin()
+        .read_line(&mut answer)
+        .expect("Failed to read answer");
+	let answer: u64 = answer.trim().parse().expect("Please enter 1, 2 or 3");
+    match answer {
+        2 => correct = true, 
+        _ => println!("Incorrect! Please try again!"), 
+     };
+		}
+		println!("You are correct! Fantastic! \u{1F386} \u{1F387} \u{1F386} \n
+		Here is your reward! \u{1F48E} \n
+		Now back to the game! \n");
+		main();
+        
+}
+
+
+
+
